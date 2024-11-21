@@ -5,10 +5,19 @@ class GameOverScreen extends Phaser.Scene {
     super({ key: "GameOverScreen" });
     this.score = 0;
     this.scoreText = null;
+    this.isSoundOn = true;
+    this.isMusicOn = true;
+    this.soundVolume = 10;
+    this.musicVolume = 10;
   }
 
   init(data) {
-    this.score = data;
+    const { isSoundOn, isMusicOn, soundVolume, musicVolume, score } = data;
+    this.isSoundOn = isSoundOn;
+    this.isMusicOn = isMusicOn;
+    this.soundVolume = soundVolume;
+    this.musicVolume = musicVolume;
+    this.score = score;
   }
 
   preload() {}

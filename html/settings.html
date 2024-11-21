@@ -1,0 +1,36 @@
+<style>
+    #settings{
+        width: 300px;
+        height: 300px;
+        background-color: #4d505b;
+        padding:20px;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.73);
+        border-radius:10px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+</style>
+
+<div id="settings">
+    <div>
+        <label>Sound: </label>
+        <input id="sound" name="sound" type="checkbox"/>
+    </div>
+    <div>
+        <label>Music: </label>
+        <input id="music" name="music" type="checkbox">
+    </div>
+    <div>
+        <label>Sound Volume: </label>
+        <input id="sound-volume" max="10" min="0" name="sound-volume" type="range">
+    </div>
+    <div>
+        <label>Music Volume: </label>
+        <input id="music-volume" max="10" min="0" name="music-volume" type="range">
+    </div>
+</div>

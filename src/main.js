@@ -3,6 +3,7 @@ import GameScene from "./gameScene.js";
 import LoadingScene from "./loadingScene.js";
 import MainMenuScene from "./mainMenuScene.js";
 import GameOverScreen from "./gameOverScreen.js";
+import SettingsScene from "./settingsScene.js";
 
 const config = {
   type: Phaser.AUTO,
@@ -18,7 +19,15 @@ const config = {
       },
     },
   },
-  scene: [LoadingScene, MainMenuScene, GameScene, GameOverScreen],
+  parent: "body",
+  dom: { createContainer: true },
+  scene: [
+    LoadingScene,
+    MainMenuScene,
+    SettingsScene,
+    GameScene,
+    GameOverScreen,
+  ],
 };
 
 const game = new Phaser.Game(config);

@@ -10,10 +10,18 @@ class GameScene extends Phaser.Scene {
     this.score = 0;
     this.scoreText = null;
     this.playerName = null;
+    this.isSoundOn = true;
+    this.isMusicOn = true;
+    this.soundVolume = 10;
+    this.musicVolume = 10;
   }
 
   init(data) {
-    this.playerName = data.playerName;
+    const { isSoundOn, isMusicOn, soundVolume, musicVolume } = data;
+    this.isSoundOn = isSoundOn;
+    this.isMusicOn = isMusicOn;
+    this.soundVolume = soundVolume;
+    this.musicVolume = musicVolume;
   }
 
   preload() {}
@@ -65,13 +73,24 @@ class GameScene extends Phaser.Scene {
           this.player,
           enemy,
           () => {
+            const deadSound = this.sound.add("dead-sound");
+            deadSound.setVolume(this.soundVolume);
+            deadSound.setMute(!this.isSoundOn);
+            deadSound.play();
+
             this.player.play("dead");
             this.time.addEvent({
-              delay: 500,
+              delay: 700,
               callback: () => {
                 playerColliding.destroy();
                 timer.paused = true;
-                this.scene.start("GameOverScreen", this.score);
+                this.scene.start("GameOverScreen", {
+                  score: this.score,
+                  isSoundOn: this.isSoundOn,
+                  isMusicOn: this.isMusicOn,
+                  soundVolume: this.soundVolume,
+                  musicVolume: this.musicVolume,
+                });
               },
             });
           },
@@ -120,6 +139,11 @@ class GameScene extends Phaser.Scene {
     });
     this.input.keyboard.addListener("keydown-F", (e) => {
       if (this.gameStarted) {
+        const fireSound = this.sound.add("fire-sound");
+        fireSound.setVolume(this.soundVolume);
+        fireSound.setMute(!this.isSoundOn);
+        fireSound.play();
+
         const bulletObject = this.physics.add
           .image(this.player.x + 90, this.player.y + 90, "bullet")
           .setScale(0.1);
@@ -128,6 +152,7 @@ class GameScene extends Phaser.Scene {
         // bulletObject.body.setGravityY(0);
         this.player.play("shoot");
         this.bulletObjects.push(bulletObject);
+
         this.physics.add.overlap(
           bulletObject,
           this.enemyObjects,

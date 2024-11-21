@@ -10,6 +10,11 @@ class LoadingScene extends Phaser.Scene {
     this.load.image("player", "/assets/walk/tile000.png");
     this.load.image("bullet", "/assets/bullet.png");
     this.load.image("enemy", "/assets/enemy/tile000.png");
+    this.load.audio("fire-sound", "/assets/shoot.mp3");
+    this.load.audio("dead-sound", "/assets/dead.mp3");
+    this.load.audio("walk-sound", "/assets/walk.mp3");
+
+    this.load.html("settings", "/html/settings.html");
 
     for (let i = 1; i <= 7; i++) {
       this.load.image(`walk-${i}`, `/assets/walk/tile00${i - 1}.png`);
@@ -54,7 +59,7 @@ class LoadingScene extends Phaser.Scene {
           { key: "walk-6" },
           { key: "walk-7" },
         ],
-        repeat: 0,
+        repeat: -1,
       });
 
       // Idle Animation
@@ -118,7 +123,12 @@ class LoadingScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("MainMenuScene", { playerName: "Player1" });
+    this.scene.start("MainMenuScene", {
+      isSoundOn: true,
+      isMusicOn: true,
+      soundVolume: 5,
+      musicVolume: 5,
+    });
   }
 
   update() {}
