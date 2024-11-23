@@ -117,6 +117,22 @@ class GameScene extends Phaser.Scene {
       callbackScope: this,
     });
 
+    // Particles
+    let emitter = this.add.particles(0, 0, "smoke", {
+      lifespan: 5000,
+      // speedX: { min: 10, max: 800 },
+      emitZone: {
+        type: "random",
+        source: new Phaser.Geom.Line(0, 0, 800, -50),
+        yoyo: true,
+      },
+      deathZone: {},
+      // speedY: 150,
+      gravityY: 50,
+      // alpha: { start: 1, emd: 0.2 },
+      scale: 0.002,
+    });
+
     this.input.keyboard.addListener("keydown-A", (e) => {
       if (this.gameStarted) {
         this.player.setVelocityX(-60);
