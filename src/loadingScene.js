@@ -13,6 +13,7 @@ class LoadingScene extends Phaser.Scene {
     this.load.audio("fire-sound", "/assets/shoot.mp3");
     this.load.audio("dead-sound", "/assets/dead.mp3");
     this.load.audio("walk-sound", "/assets/walk.mp3");
+    this.load.audio("enemy-sound", "/assets/enemy.m4a");
 
     this.load.html("settings", "/html/settings.html");
 

@@ -9,7 +9,6 @@ class GameScene extends Phaser.Scene {
     this.enemyObjects = [];
     this.score = 0;
     this.scoreText = null;
-    this.playerName = null;
     this.isSoundOn = true;
     this.isMusicOn = true;
     this.soundVolume = 10;
@@ -37,6 +36,10 @@ class GameScene extends Phaser.Scene {
     bg.setBodySize(7000, 670);
     bg.setOffset(0, 2950);
 
+    // Lights
+    this.lights.enable();
+    this.lights.setAmbientColor(0xffffff);
+
     // Player
     this.player = this.physics.add
       .sprite(100, this.game.config.height - 300, "player")
@@ -56,12 +59,24 @@ class GameScene extends Phaser.Scene {
 
     // Enemy
     let timer = this.time.addEvent({
-      delay: 1000,
+      delay: 2000,
       loop: true,
       callback: () => {
+        // const enemySound = this.sound.add("enemy-sound");
+        // enemySound.setVolume(this.soundVolume);
+        // enemySound.setMute(!this.isSoundOn);
+        // enemySound.seek = 5;
+        // enemySound.play();
+
         const enemy = this.physics.add
           .sprite(this.game.config.width + 100, 320, "enemy")
+          .setDepth(10)
+          .setPipeline("Light2D")
           .setScale(3.2, 3.2);
+
+        enemy.lights = this.lights
+          .addPointLight(enemy.x, enemy.y - 50, 0xf31500, 50, 1)
+          .setDepth(5);
 
         enemy.setBodySize(38, 65);
         enemy.setOffset(30, 34);
@@ -140,7 +155,7 @@ class GameScene extends Phaser.Scene {
     this.input.keyboard.addListener("keydown-F", (e) => {
       if (this.gameStarted) {
         const fireSound = this.sound.add("fire-sound");
-        fireSound.setVolume(this.soundVolume);
+        fireSound.setVolume(this.soundVolume * 0.1);
         fireSound.setMute(!this.isSoundOn);
         fireSound.play();
 
@@ -159,6 +174,7 @@ class GameScene extends Phaser.Scene {
           (objA, objB) => {
             objA.destroy();
             objB.destroy();
+            objB.lights.destroy();
             this.score += 1;
             this.updateScoreText();
           },
@@ -188,6 +204,8 @@ class GameScene extends Phaser.Scene {
       });
     }
     this.enemyObjects.forEach((enemy, idx) => {
+      enemy.lights.x = enemy.x - 20;
+      enemy.lights.y = enemy.y - 30;
       if (enemy.x < 0) {
         enemy.destroy();
         this.enemyObjects.splice(idx, 1);
