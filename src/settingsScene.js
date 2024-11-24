@@ -85,11 +85,20 @@ class SettingsScene extends Phaser.Scene {
     containerBg.setInteractive();
 
     containerBg.on("pointerup", (e) => {
-      this.scene.start("MainMenuScene", {
-        isSoundOn: this.isSoundOn,
-        isMusicOn: this.isMusicOn,
-        soundVolume: this.soundVolume,
-        musicVolume: this.musicVolume,
+      const clickSound = this.sound.add("click-sound");
+      clickSound.setMute(!this.isSoundOn);
+      clickSound.setVolume(this.soundVolume * 0.1);
+      clickSound.play();
+      this.time.addEvent({
+        delay: 250,
+        callback: () => {
+          this.scene.start("MainMenuScene", {
+            isSoundOn: this.isSoundOn,
+            isMusicOn: this.isMusicOn,
+            soundVolume: this.soundVolume,
+            musicVolume: this.musicVolume,
+          });
+        },
       });
     });
   }

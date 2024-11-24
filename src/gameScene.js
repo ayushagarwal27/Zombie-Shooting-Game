@@ -137,6 +137,10 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(-60);
         if (this.player.anims.currentAnim.key !== "walk") {
+          walkSound = this.sound.add("walk-sound");
+          walkSound.setMute(!this.isSoundOn);
+          walkSound.setVolume(this.soundVolume * 0.1);
+          walkSound.play();
           this.player.play("walk");
         }
         this.player.flipX = true;
@@ -146,8 +150,11 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(0);
         this.player.play("idle");
+        walkSound.destroy();
       }
     });
+    let walkSound = "";
+
     this.input.keyboard.addListener("keydown-W", (e) => {
       if (this.gameStarted && this.player.body.velocity.y === 0) {
         this.player.setVelocityY(-50);
@@ -157,6 +164,10 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(60);
         if (this.player.anims.currentAnim.key !== "walk") {
+          walkSound = this.sound.add("walk-sound");
+          walkSound.setMute(!this.isSoundOn);
+          walkSound.setVolume(this.soundVolume * 0.1);
+          walkSound.play();
           this.player.play("walk");
         }
         this.player.flipX = false;
@@ -166,6 +177,7 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(0);
         this.player.play("idle");
+        walkSound.destroy();
       }
     });
     this.input.keyboard.addListener("keydown-F", (e) => {
