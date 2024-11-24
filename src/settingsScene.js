@@ -36,10 +36,18 @@ class SettingsScene extends Phaser.Scene {
     const musicVolume = htmlContainer.getChildByID("music-volume");
 
     // Set Initial Values
-    sound.checked = this.isSoundOn;
-    music.checked = this.isMusicOn;
-    soundVolume.value = this.soundVolume;
-    musicVolume.value = this.musicVolume;
+    if (sound) {
+      sound.checked = this.isSoundOn;
+    }
+    if (music) {
+      music.checked = this.isMusicOn;
+    }
+    if (musicVolume) {
+      musicVolume.value = this.musicVolume;
+    }
+    if (soundVolume) {
+      soundVolume.value = this.soundVolume;
+    }
 
     sound.addEventListener("change", (e) => {
       this.isSoundOn = sound.checked;
