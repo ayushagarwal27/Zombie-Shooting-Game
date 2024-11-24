@@ -44,8 +44,8 @@ class LoadingScene extends Phaser.Scene {
       .text(
         this.game.config.width / 2,
         this.game.config.height / 2,
-        "Loading...",
-        { fontSize: 20, color: "yellow", align: "center" },
+        "Game Loading...",
+        { fontSize: 24, color: "yellow", align: "center" },
       )
       .setOrigin(0.5, 0.5);
 

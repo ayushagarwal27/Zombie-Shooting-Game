@@ -26,11 +26,11 @@ class GameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    // // Background
+    // Background
     const bg = this.physics.add
       .image(0, 0, "bg")
       .setOrigin(0, 0)
-      .setDisplaySize(this.game.config.width, this.game.config.height);
+      .setDisplaySize(this.game.config.width + 100, this.game.config.height);
     bg.body.allowGravity = false;
     bg.body.immovable = true;
     bg.setBodySize(7000, 670);
@@ -46,16 +46,20 @@ class GameScene extends Phaser.Scene {
       .setScale(3, 3);
     this.player.setBodySize(38, 66);
     this.player.setOffset(40, 63);
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(0, 0, 900, 600);
 
     this.player.play("idle");
 
     // Collision
     this.physics.add.collider(this.player, bg);
 
-    this.scoreText = this.add.text(10, 10, "Score 0", {
-      font: "bold 30px sans-serif",
-      color: "white",
-    });
+    this.scoreText = this.add
+      .text(10, 10, "Score 0", {
+        font: "bold 30px sans-serif",
+        color: "white",
+      })
+      .setScrollFactor(0);
 
     // Enemy
     let timer = this.time.addEvent({
@@ -137,11 +141,10 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(-60);
         if (this.player.anims.currentAnim.key !== "walk") {
-          walkSound = this.sound.add("walk-sound");
-          walkSound.setMute(!this.isSoundOn);
-          walkSound.setVolume(this.soundVolume * 0.1);
-          walkSound.play();
           this.player.play("walk");
+        }
+        if (!walkSound.isPlaying) {
+          walkSound.play();
         }
         this.player.flipX = true;
       }
@@ -150,10 +153,12 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(0);
         this.player.play("idle");
-        walkSound.destroy();
+        walkSound.stop();
       }
     });
-    let walkSound = "";
+    const walkSound = this.sound.add("walk-sound");
+    walkSound.setMute(!this.isSoundOn);
+    walkSound.setVolume(this.soundVolume * 0.1);
 
     this.input.keyboard.addListener("keydown-W", (e) => {
       if (this.gameStarted && this.player.body.velocity.y === 0) {
@@ -164,11 +169,10 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(60);
         if (this.player.anims.currentAnim.key !== "walk") {
-          walkSound = this.sound.add("walk-sound");
-          walkSound.setMute(!this.isSoundOn);
-          walkSound.setVolume(this.soundVolume * 0.1);
-          walkSound.play();
           this.player.play("walk");
+        }
+        if (!walkSound.isPlaying) {
+          walkSound.play();
         }
         this.player.flipX = false;
       }
@@ -177,7 +181,7 @@ class GameScene extends Phaser.Scene {
       if (this.gameStarted) {
         this.player.setVelocityX(0);
         this.player.play("idle");
-        walkSound.destroy();
+        walkSound.stop();
       }
     });
     this.input.keyboard.addListener("keydown-F", (e) => {
