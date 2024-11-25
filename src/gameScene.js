@@ -1,11 +1,11 @@
 import Phaser from "phaser";
+import Bullet from "./components/bullet.js";
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
     this.player = null;
     this.gameStarted = true;
-    this.bulletObjects = [];
     this.enemyObjects = [];
     this.score = 0;
     this.scoreText = null;
@@ -191,14 +191,15 @@ class GameScene extends Phaser.Scene {
         fireSound.setMute(!this.isSoundOn);
         fireSound.play();
 
-        const bulletObject = this.physics.add
-          .image(this.player.x + 90, this.player.y + 90, "bullet")
-          .setScale(0.1);
+        const bulletObject = new Bullet(
+          this,
+          this.player.x + 90,
+          this.player.y + 90,
+        ).setScale(0.1);
         bulletObject.setVelocityX(500);
         bulletObject.body.allowGravity = false;
         // bulletObject.body.setGravityY(0);
         this.player.play("shoot");
-        this.bulletObjects.push(bulletObject);
 
         this.physics.add.overlap(
           bulletObject,
@@ -227,14 +228,6 @@ class GameScene extends Phaser.Scene {
 
   // Game Loop
   update() {
-    if (this.bulletObjects.length > 0) {
-      this.bulletObjects.forEach((bullet, idx) => {
-        if (bullet.x > this.game.config.width) {
-          bullet.destroy();
-          this.bulletObjects.splice(idx, 1);
-        }
-      });
-    }
     this.enemyObjects.forEach((enemy, idx) => {
       enemy.lights.x = enemy.x - 20;
       enemy.lights.y = enemy.y - 30;
