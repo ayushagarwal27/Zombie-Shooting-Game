@@ -36,6 +36,13 @@ class GameScene extends Phaser.Scene {
     bg.setBodySize(7000, 670);
     bg.setOffset(0, 2950);
 
+    // Background Sound
+    const rainSound = this.sound.add("rain-sound");
+    rainSound.setVolume(0.3);
+    rainSound.setMute(!this.isSoundOn);
+    rainSound.loop = true;
+    rainSound.play();
+
     // Lights
     this.lights.enable();
     this.lights.setAmbientColor(0xffffff);
@@ -66,18 +73,11 @@ class GameScene extends Phaser.Scene {
       delay: 2000,
       loop: true,
       callback: () => {
-        // const enemySound = this.sound.add("enemy-sound");
-        // enemySound.setVolume(this.soundVolume);
-        // enemySound.setMute(!this.isSoundOn);
-        // enemySound.seek = 5;
-        // enemySound.play();
-
         const enemy = this.physics.add
           .sprite(this.game.config.width + 100, 320, "enemy")
           .setDepth(10)
           .setPipeline("Light2D")
           .setScale(3.2, 3.2);
-
         enemy.lights = this.lights
           .addPointLight(enemy.x, enemy.y - 50, 0xf31500, 50, 1)
           .setDepth(5);
@@ -88,16 +88,22 @@ class GameScene extends Phaser.Scene {
         enemy.flipX = true;
         enemy.setVelocityX(-100);
 
+        // const enemySound = this.sound.add("enemy-sound");
+        // enemySound.setVolume(0.5);
+        // enemySound.setMute(!this.isSoundOn);
+        // enemySound.play();
+        // enemy.enemySound = enemySound;
+
         let playerColliding = this.physics.add.collider(
           this.player,
           enemy,
           () => {
             const deadSound = this.sound.add("dead-sound");
+            this.player.play("dead");
             deadSound.setVolume(this.soundVolume);
             deadSound.setMute(!this.isSoundOn);
             deadSound.play();
-
-            this.player.play("dead");
+            rainSound.destroy();
             this.time.addEvent({
               delay: 700,
               callback: () => {
