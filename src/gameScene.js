@@ -68,6 +68,18 @@ class GameScene extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
+    this.add
+      .text(
+        60,
+        this.game.config.height - 80,
+        "A - Back\nD - Forward\nF - Fire",
+        {
+          font: "14px sans-serif",
+          color: "#d0d0d0",
+        },
+      )
+      .setScrollFactor(0);
+
     // Enemy
     let timer = this.time.addEvent({
       delay: 2000,
