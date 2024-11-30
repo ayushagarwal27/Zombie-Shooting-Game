@@ -53,6 +53,7 @@ class GameScene extends Phaser.Scene {
       .setScale(3, 3);
     this.player.setBodySize(38, 66);
     this.player.setOffset(40, 63);
+    this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(0, 0, 900, 600);
 
